@@ -1,70 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Тестовая страница</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #f4f4f9;
-      color: #333;
-    }
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: auto auto;
-      gap: 10px;
-      max-width: 800px;
-      width: 100%;
-      padding: 20px;
-    }
-    .tile {
-      background-color: #4a90e2;
-      color: white;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .tile:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-    .large-tile {
-      grid-column: span 2;
-      height: 150px;
-    }
-    .small-tile {
-      height: 100px;
-    }
-    .info {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-      color: #666;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест2 - 041224</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        nav {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        nav a {
+            text-decoration: none;
+            color: #4CAF50;
+            margin: 0 1rem;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-  <div class="grid-container">
-    <div class="tile large-tile">Новости</div>
-    <div class="tile small-tile">Страница 1</div>
-    <div class="tile small-tile">Страница 2</div>
-    <div class="tile small-tile">Страница 3</div>
-    <div class="tile small-tile">Страница 4</div>
-  </div>
-  <div class="info">
-    Добро пожаловать на наш сайт! Здесь вы можете узнать последние новости и перейти к другим разделам.  
-    Оставайтесь на связи!
-  </div>
+    <header>
+        <h1>Привет, я [Твоё Имя]!</h1>
+        <p>Это мой персональный сайт-визитка.</p>
+    </header>
+    
+    <nav>
+        <a href="#about">Обо мне</a>
+        <a href="#projects">Проекты</a>
+        <a href="#contacts">Контакты</a>
+    </nav>
+    
+    <div class="container">
+        <section id="about">
+            <h2>Обо мне</h2>
+            <p>Краткая информация о себе: твои увлечения, навыки и достижения. Расскажи миру, кто ты!</p>
+        </section>
+        
+        <section id="projects">
+            <h2>Проекты</h2>
+            <ul>
+                <li><a href="#">Проект 1</a> - краткое описание проекта.</li>
+                <li><a href="#">Проект 2</a> - краткое описание проекта.</li>
+                <li><a href="#">Проект 3</a> - краткое описание проекта.</li>
+            </ul>
+        </section>
+        
+        <section id="contacts">
+            <h2>Контакты</h2>
+            <p>Email: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+            <p>Телефон: +7 (XXX) XXX-XX-XX</p>
+            <p>Соцсети: <a href="#">ВКонтакте</a>, <a href="#">GitHub</a></p>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2024 [Твоё Имя]. Все права защищены.</p>
+    </footer>
 </body>
 </html>
