@@ -36,10 +36,6 @@
             align-self: flex-start;
         }
         
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        
         #loading-screen {
             position: absolute;
             top: 50%;
@@ -47,21 +43,11 @@
             transform: translate(-50%, -50%);
             text-align: center;
         }
-        
-        .progress-bar {
-            width: 200px;
-            height: 20px;
-            background-color: #eee;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        
-        .progress {
-            width: 0%;
-            height: 100%;
-            background-color: #4a90e2;
-            transition: width 0.3s ease;
+
+        #error-message {
+            color: red;
+            margin-top: 20px;
+            display: none;
         }
     </style>
 </head>
@@ -75,45 +61,79 @@
     
     <div id="loading-screen">
         <h2>Загрузка...</h2>
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
+        <div id="error-message"></div>
     </div>
 
     <script>
         var engine = null;
-        
         var loadingScreen = document.getElementById('loading-screen');
-        var progressBar = document.getElementById('progress');
+        var errorMessage = document.getElementById('error-message');
 
-        var config = {
-            canvas: document.getElementById('canvas'),
-            canvasResizePolicy: 2,
-            executable: 'game',
-            mainPack: 'game.pck',
-            locale: 'ru',
-            args: [],
-            onProgress: function(current, total) {
-                var progress = (current / total) * 100;
-                progressBar.style.width = progress + '%';
-                if (progress === 100) {
-                    setTimeout(function() {
-                        loadingScreen.style.display = 'none';
-                    }, 500);
-                }
-            },
-        };
-
-        function startGame() {
-            engine = new Engine(config);
-            engine.startGame();
+        async function checkFile(path) {
+            try {
+                const response = await fetch(path);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return true;
+            } catch (error) {
+                console.error(`Ошибка загрузки ${path}:`, error);
+                return false;
+            }
         }
 
-        // Загрузка движка Godot
-        var script = document.createElement('script');
-        script.src = 'WebTest3/index.js';
-        script.onload = startGame;
-        document.body.appendChild(script);
+        async function initGame() {
+            // Проверяем файлы с именем index вместо game
+            const files = [
+                'WebTest2/index.js',
+                'WebTest2/index.wasm',
+                'WebTest2/index.pck'
+            ];
+
+            let missingFiles = [];
+            for (let file of files) {
+                if (!(await checkFile(file))) {
+                    missingFiles.push(file);
+                }
+            }
+
+            if (missingFiles.length > 0) {
+                errorMessage.style.display = 'block';
+                errorMessage.innerHTML = `Не удалось найти следующие файлы:<br>${missingFiles.join('<br>')}`;
+                return;
+            }
+
+            var config = {
+                canvas: document.getElementById('canvas'),
+                canvasResizePolicy: 2,
+                executable: 'WebTest2/index',  // Изменено на index
+                mainPack: 'WebTest2/index.pck', // Изменено на index.pck
+                locale: 'ru',
+                args: [],
+                onProgress: function(current, total) {
+                    const progress = (current / total) * 100;
+                    console.log(`Загрузка: ${progress}%`);
+                },
+                onExit: function() {
+                    console.log('Игра завершена');
+                }
+            };
+
+            const script = document.createElement('script');
+            script.src = 'WebTest2/index.js';
+            script.onload = function() {
+                engine = new Engine(config);
+                engine.startGame().catch(error => {
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = 'Ошибка запуска игры: ' + error;
+                });
+            };
+            script.onerror = function() {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Не удалось загрузить движок игры';
+            };
+            document.body.appendChild(script);
+        }
+
+        initGame();
     </script>
 </body>
 </html>
